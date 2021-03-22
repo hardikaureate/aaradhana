@@ -7,6 +7,8 @@ import HeadOne from "./image/headone.png"
 import HeadTwo from "./image/headtwo.png"
 import HeadThree from "./image/headthird.png"
 //import Mobhomebanner from "./image/mhomebanner.jpg"
+//import Mobhomebanner from "./image/mhomebanner.jpg"
+//import Mobhomebanner from "./image/mhomebanner.jpg"
 import Mobhomebanner from "./image/mhomebanner.jpg"
 import ProgressiveImage from "react-progressive-graceful-image"
 import PlaceHolder from '../components/image/placeholder.png'
