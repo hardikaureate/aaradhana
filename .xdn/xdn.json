@@ -1,0 +1,318 @@
+{
+  "version": "2.48.1",
+  "backends": {},
+  "destinations": {
+    "default": {
+      "index": 0,
+      "routes": [
+        {
+          "path": "/__xdn__/cache-manifest.js",
+          "routeJson": "{\"path\":\"/__xdn__/cache-manifest.js\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/__xdn__/cache-manifest\\.js[/#\\?]?$"
+            }
+          ],
+          "cache": {
+            "maxAgeSeconds": 31536000
+          },
+          "route": {
+            "action": "proxy",
+            "backend": "__js__"
+          },
+          "transform": {
+            "request": [],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "set-header",
+                "name": "cache-control",
+                "value": "private, max-age=3600"
+              },
+              {
+                "action": "set-header",
+                "name": "content-type",
+                "value": "text/javascript"
+              },
+              {
+                "action": "set-header",
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              }
+            ]
+          }
+        },
+        {
+          "path": "/__xdn__/devtools/enable",
+          "routeJson": "{\"method\":\"get\",\"path\":\"/__xdn__/devtools/enable\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/__xdn__/devtools/enable[/#\\?]?$"
+            },
+            {
+              "value": "${method}",
+              "matchRegex": "(?i)^get$"
+            }
+          ],
+          "route": {
+            "action": "synthetic-response",
+            "statusCode": 302
+          },
+          "transform": {
+            "request": [],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "add-cookie",
+                "name": "xdn-devtools-enabled",
+                "value": "true; Path=/"
+              },
+              {
+                "action": "set-header",
+                "name": "location",
+                "value": "${url}"
+              },
+              {
+                "action": "update-header",
+                "name": "location",
+                "valueRegex": "(?i)^/__xdn__/devtools/enable(\\?[^#]+)?[/#\\?]?$",
+                "replaceValue": "/\\1"
+              }
+            ]
+          }
+        },
+        {
+          "path": "/__xdn__/devtools/disable",
+          "routeJson": "{\"method\":\"get\",\"path\":\"/__xdn__/devtools/disable\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/__xdn__/devtools/disable[/#\\?]?$"
+            },
+            {
+              "value": "${method}",
+              "matchRegex": "(?i)^get$"
+            }
+          ],
+          "route": {
+            "action": "synthetic-response",
+            "statusCode": 302
+          },
+          "transform": {
+            "request": [],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "add-cookie",
+                "name": "xdn-devtools-enabled",
+                "value": "false; Path=/"
+              },
+              {
+                "action": "set-header",
+                "name": "location",
+                "value": "${url}"
+              },
+              {
+                "action": "update-header",
+                "name": "location",
+                "valueRegex": "(?i)^/__xdn__/devtools/disable(\\?[^#]+)?[/#\\?]?$",
+                "replaceValue": "/\\1"
+              }
+            ]
+          }
+        },
+        {
+          "path": "/__xdn__/devtools/:path*",
+          "routeJson": "{\"path\":\"/__xdn__/devtools/:path*\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/__xdn__/devtools(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$"
+            }
+          ],
+          "cache": {
+            "maxAgeSeconds": 315360000
+          },
+          "route": {
+            "action": "proxy",
+            "backend": "__static__",
+            "fsPath": [
+              "/node_modules/@xdn/devtools/widget/:path*"
+            ],
+            "fallbackToCompute": false
+          },
+          "transform": {
+            "request": [
+              {
+                "action": "update-path",
+                "valueRegex": "(?i)^/__xdn__/devtools(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$",
+                "replaceValue": "/node_modules/@xdn/devtools/widget/\\1"
+              }
+            ],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "set-header",
+                "name": "cache-control",
+                "value": "private, no-store, no-cache"
+              }
+            ]
+          }
+        },
+        {
+          "path": "/static/:path*",
+          "routeJson": "{\"method\":\"get\",\"path\":\"/static/:path*\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/static(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$"
+            },
+            {
+              "value": "${method}",
+              "matchRegex": "(?i)^get$"
+            }
+          ],
+          "cache": {
+            "maxAgeSeconds": 31536000,
+            "matchExplicitMethod": "get"
+          },
+          "route": {
+            "action": "proxy",
+            "backend": "__permanent_static__",
+            "fsPath": [
+              "/build/static/:path*"
+            ],
+            "fallbackToCompute": false
+          },
+          "transform": {
+            "request": [
+              {
+                "action": "update-path",
+                "valueRegex": "(?i)^/static(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$",
+                "replaceValue": "/build/static/\\1"
+              }
+            ],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "set-header",
+                "name": "cache-control",
+                "value": "private, max-age=31536000"
+              }
+            ]
+          }
+        },
+        {
+          "path": "/analyze/:path*",
+          "routeJson": "{\"method\":\"get\",\"path\":\"/analyze/:path*\"}",
+          "match": [
+            {
+              "value": "${path}",
+              "matchRegex": "(?i)^/analyze(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$"
+            },
+            {
+              "value": "${method}",
+              "matchRegex": "(?i)^get$"
+            }
+          ],
+          "cache": {
+            "maxAgeSeconds": 31536000,
+            "matchExplicitMethod": "get"
+          },
+          "route": {
+            "action": "proxy",
+            "backend": "__static__",
+            "fsPath": [
+              "/build/analyze/:path*"
+            ],
+            "fallbackToCompute": false
+          },
+          "transform": {
+            "request": [
+              {
+                "action": "update-path",
+                "valueRegex": "(?i)^/analyze(?:/((?:[^/#\\?]+?)(?:/(?:[^/#\\?]+?))*))?[/#\\?]?$",
+                "replaceValue": "/build/analyze/\\1"
+              }
+            ],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "set-header",
+                "name": "cache-control",
+                "value": "private, no-store, no-cache"
+              }
+            ]
+          }
+        },
+        {
+          "routeJson": "{}",
+          "match": [],
+          "cache": {
+            "maxAgeSeconds": 86400,
+            "staleWhileRevalidateSeconds": 86400
+          },
+          "route": {
+            "action": "proxy",
+            "backend": "__js__"
+          },
+          "transform": {
+            "request": [],
+            "upstreamResponse": [
+              {
+                "action": "set-header",
+                "name": "vary",
+                "value": "accept-encoding"
+              }
+            ],
+            "response": [
+              {
+                "action": "set-header",
+                "name": "cache-control",
+                "value": "private, no-store, no-cache"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

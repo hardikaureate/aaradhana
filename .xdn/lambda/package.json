@@ -1,0 +1,30 @@
+{
+  "scripts": {
+    "xdn": "xdn",
+    "xdn:dev": "xdn dev",
+    "xdn:build": "xdn build",
+    "xdn:deploy": "xdn deploy",
+    "dev": "frontity dev",
+    "build": "frontity build",
+    "serve": "frontity serve"
+  },
+  "name": "aaradhanafrontity",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Frontity project",
+  "keywords": [
+    "frontity"
+  ],
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "prettier": {},
+  "dependencies": {
+    "@frontity/core": "^1.10.1",
+    "@frontity/yoast": "^2.1.1",
+    "frontity-contact-form-7": "^0.1.7",
+    "react-device-identifier": "^0.3.0",
+    "react-progressive-graceful-image": "^0.6.12"
+  }
+}
